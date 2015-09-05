@@ -10,11 +10,15 @@
 
 class MainWindow : public QWidget
 {
+  Q_OBJECT
+
 public:
    MainWindow();
 
+private slots:
+   void buttonClicked();
 private:
-   QVBoxLayout*  windowLayout;
+   QVBoxLayout* windowLayout;
 
    QLineEdit*   display;
 

@@ -23,6 +23,7 @@ MainWindow::MainWindow()
     for (int j = 0; j < buttonCols; j++)
     {
       QPushButton* button = new QPushButton(ButtonStrings [k]);
+      connect(button, SIGNAL (released()), this, SLOT (buttonClicked()));
       buttonLayout->addWidget(button, i, j);
       k++;
     }
@@ -32,4 +33,11 @@ MainWindow::MainWindow()
 
   windowLayout->addWidget(buttonContainer);
   this->setLayout(windowLayout);
+}
+
+void MainWindow::buttonClicked()
+{
+  QPushButton *clickedButton = qobject_cast<QPushButton *>(sender());
+  QString buttonText = clickedButton->text();
+  display->setText(buttonText);
 }
