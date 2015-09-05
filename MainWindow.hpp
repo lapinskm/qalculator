@@ -1,12 +1,25 @@
 #ifndef MAIN_WINDOW_HPP
 #define MAIN_WINDOW_HPP
 
-#include <QMainWindow>
 
-class MainWindow : public QMainWindow
+#include <QWidget>
+#include <QVBoxLayout>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QGridLayout>
+
+class MainWindow : public QWidget
 {
 public:
    MainWindow();
+
+private:
+   QVBoxLayout*  windowLayout;
+
+   QLineEdit*   display;
+
+   QWidget*     buttonContainer;
+   QGridLayout* buttonLayout;
 };
 
 #endif // MAIN_WINDOW_HPP
