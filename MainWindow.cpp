@@ -39,5 +39,19 @@ void MainWindow::buttonClicked()
 {
   QPushButton *clickedButton = qobject_cast<QPushButton *>(sender());
   QString buttonText = clickedButton->text();
-  display->setText(buttonText);
+
+  bool isNumber;
+  buttonText.toInt(&isNumber);
+
+  if(isNumber || "." == buttonText)
+  {
+    (display->text()+buttonText).toDouble(&isNumber);
+    if(isNumber)
+    {
+       display->setText(display->text()+buttonText);
+    }
+  }
+  else
+  {
+  }
 }
