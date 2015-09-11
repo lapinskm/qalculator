@@ -1,10 +1,10 @@
 #include "MainWindow.hpp"
-
+#include "QDebug"
 MainWindow::MainWindow()
-  :windowLayout       (new QVBoxLayout(this))
-  ,display            (new QLineEdit("0",this))
-  ,buttonContainer    (new QWidget(this))
-  ,buttonLayout       (new QGridLayout(this))
+  :windowLayout       (new QVBoxLayout)
+  ,display            (new QLineEdit("0"))
+  ,buttonContainer    (new QWidget)
+  ,buttonLayout       (new QGridLayout)
   ,operations         ("+-*/=")
   ,nextInput          (false)
   ,displayNeedsCleanup(true)
@@ -33,7 +33,6 @@ MainWindow::MainWindow()
   }
 
   buttonContainer->setLayout(buttonLayout);
-
   windowLayout->addWidget(buttonContainer);
   this->setLayout(windowLayout);
 }
