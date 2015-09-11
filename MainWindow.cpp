@@ -1,5 +1,4 @@
 #include "MainWindow.hpp"
-#include "QDebug"
 MainWindow::MainWindow()
   :windowLayout       (new QVBoxLayout)
   ,display            (new QLineEdit("0"))
@@ -11,6 +10,7 @@ MainWindow::MainWindow()
   ,previouslyEqPressed(false)
 {
   display->setReadOnly(true);
+  display->setAlignment(Qt::AlignRight);
   windowLayout->addWidget(display);
 
   const int buttonRows = 4;
