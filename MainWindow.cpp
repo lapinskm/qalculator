@@ -1,12 +1,15 @@
 #include "MainWindow.hpp"
 
 MainWindow::MainWindow()
-  :windowLayout   (new QVBoxLayout)
-  ,display        (new QLineEdit)
-  ,buttonContainer(new QWidget)
-  ,buttonLayout   (new QGridLayout)
+  :windowLayout       (new QVBoxLayout(this))
+  ,display            (new QLineEdit("0",this))
+  ,buttonContainer    (new QWidget(this))
+  ,buttonLayout       (new QGridLayout(this))
+  ,operations         ("+-*/=")
+  ,nextInput          (false)
+  ,displayNeedsCleanup(true)
+  ,previouslyEqPressed(false)
 {
-
   display->setReadOnly(true);
   windowLayout->addWidget(display);
 
@@ -41,17 +44,57 @@ void MainWindow::buttonClicked()
   QString buttonText = clickedButton->text();
 
   bool isNumber;
-  buttonText.toInt(&isNumber);
 
-  if(isNumber || "." == buttonText)
+  QString extendedInput=display->text()+buttonText;
+  extendedInput.toDouble(&isNumber);
+  if(isNumber)
   {
-    (display->text()+buttonText).toDouble(&isNumber);
-    if(isNumber)
+    if(displayNeedsCleanup)
     {
-       display->setText(display->text()+buttonText);
+      display->setText(buttonText);
+      displayNeedsCleanup = false;
     }
+    else
+      display->setText(extendedInput);
+
+    previouslyEqPressed = false;
   }
-  else
+
+  else if(operations.contains(buttonText))
   {
+    if("=" == buttonText)
+    {
+      if(!previouslyEqPressed)
+        mathModule.setSecondOperand(display->text().toDouble());
+
+      if(nextInput || previouslyEqPressed)
+      {
+        compute();
+        previouslyEqPressed = true;
+      }
+    }
+    else
+    {
+      if(nextInput)
+      {
+        mathModule.setSecondOperand(display->text().toDouble());
+        compute();
+      }
+      else
+        mathModule.setFirstOperand(display->text().toDouble());
+
+      mathModule.setOperationSign(buttonText);
+      nextInput = true;
+      previouslyEqPressed = false;
+    }
+    displayNeedsCleanup = true;
   }
 }
+
+void MainWindow::compute()
+{
+  double result = mathModule.PerformOperation();
+  display->setText(QString().setNum(result));
+  nextInput = false;
+}
+
